@@ -34,6 +34,8 @@ class T
 end
 
 i.implemented_by?(T) #=> true
+i.fulfilled_by?(T.new) #=> true
+
 i.implemented_by?(Class) #=> false
 
 ```

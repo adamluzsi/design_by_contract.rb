@@ -14,24 +14,32 @@ class DesignByContract::Interface
   def implemented_by?(implementator_class)
     @method_specifications.each do |name, signature|
       return false unless implementator_class.method_defined?(name)
-      return false unless signature_match?(implementator_class, name, signature)
+
+      parameters = implementator_class.instance_method(name).parameters
+      return false unless signature_match?(parameters, signature)
+    end
+    true
+  end
+
+  def fulfilled_by?(object)
+    @method_specifications.each do |name, signature|
+      return false unless object.respond_to?(name)
+
+      parameters = object.method(name).parameters
+      return false unless signature_match?(parameters, signature)
     end
     true
   end
 
   private
 
-  def signature_match?(klass, name, signature)
-    parameters = klass.instance_method(name).parameters
-
-    return false unless req_match?(parameters, signature)
-    return false unless opt_match?(parameters, signature)
-    return false unless rest_match?(parameters, signature)
-    return false unless keyreq_match?(parameters, signature)
-    return false unless key_match?(parameters, signature)
-    return false unless keyrest_match?(parameters, signature)
-
-    true
+  def signature_match?(parameters, signature)
+    req_match?(parameters, signature) &&
+      opt_match?(parameters, signature) &&
+      rest_match?(parameters, signature) &&
+      keyreq_match?(parameters, signature) &&
+      key_match?(parameters, signature) &&
+      keyrest_match?(parameters, signature)
   end
 
   def keyrest_match?(parameters, signature)

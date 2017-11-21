@@ -3,14 +3,10 @@ require 'spec_helper'
 RSpec.describe DesignByContract::Interface do
   subject(:interface) { described_class.new(method_specifications) }
 
-  def self.specify_example_class(&block)
-    klass = Class.new
-    klass.class_eval(&block)
-    let(:example_class) { klass }
-  end
-
   describe '#implemented_by?' do
     subject(:implementation_state) { interface.implemented_by?(example_class) }
+
+    include_context :example_class
 
     context 'when method specifications describe a single method' do
       let(:method_specifications) { { test: signature } }

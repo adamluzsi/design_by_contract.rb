@@ -14,7 +14,6 @@ class DesignByContract::Interface
   def implemented_by?(implementator_class)
     @method_specifications.each do |name, signature|
       return false unless implementator_class.method_defined?(name)
-
       parameters = implementator_class.instance_method(name).parameters
       return false unless signature_match?(parameters, signature)
     end
@@ -24,11 +23,16 @@ class DesignByContract::Interface
   def fulfilled_by?(object)
     @method_specifications.each do |name, signature|
       return false unless object.respond_to?(name)
-
       parameters = object.method(name).parameters
       return false unless signature_match?(parameters, signature)
     end
     true
+  end
+
+  def match?(name, parameters)
+    signature = @method_specifications[name]
+
+    signature_match?(parameters, signature)
   end
 
   private

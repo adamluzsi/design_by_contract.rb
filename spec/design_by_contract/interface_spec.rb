@@ -15,14 +15,14 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { [:req] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(value); end
           end
 
           it { is_expected.to be true }
 
           context 'and optional values are accepted after the requred part matching' do
-            specify_example_class do
+            example_class do
               def test(value, arg_with_default = 'default_value'); end
             end
 
@@ -31,7 +31,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(value = 'default_value'); end
           end
 
@@ -43,14 +43,14 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { %i[req opt] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(value, value_with_def = 'expected_default_value'); end
           end
 
           it { is_expected.to be true }
 
           context 'when multiple opt method defined in the actually method' do
-            specify_example_class do
+            example_class do
               def test(value, first_value_with_def = 1, second_value_with_def = 2); end
             end
 
@@ -59,7 +59,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(value); end
           end
 
@@ -71,7 +71,7 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { %i[req rest] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(value, *more_values); end
           end
 
@@ -79,7 +79,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(one_value_no_rest); end
           end
 
@@ -91,21 +91,21 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { [%i[keyreq expected_key]] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(expected_key:); end
           end
 
           it { is_expected.to be true }
 
           context 'and keyword that optional are accepted' do
-            specify_example_class do
+            example_class do
               def test(expected_key:, opts: {}); end
             end
 
             it { is_expected.to be true }
 
             context 'even if the keyword order not match exactly the signature order' do
-              specify_example_class do
+              example_class do
                 def test(opts: {}, expected_key:); end
               end
 
@@ -115,7 +115,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(something:); end
           end
 
@@ -127,21 +127,21 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { [%i[key optional_keyword]] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(optional_keyword: nil); end
           end
 
           it { is_expected.to be true }
 
           context 'and keyword that optional are accepted' do
-            specify_example_class do
+            example_class do
               def test(opts: {}, optional_keyword: nil); end
             end
 
             it { is_expected.to be true }
 
             context 'even if the keyword order not match exactly the signature order' do
-              specify_example_class do
+              example_class do
                 def test(opts: {}, optional_keyword: nil); end
               end
 
@@ -151,7 +151,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(something: nil); end
           end
 
@@ -163,7 +163,7 @@ RSpec.describe DesignByContract::Interface do
         let(:signature) { [%i[key optional_keyword], :keyrest] }
 
         context 'and the example class implements this specification' do
-          specify_example_class do
+          example_class do
             def test(optional_keyword: nil, **rest); end
           end
 
@@ -171,7 +171,7 @@ RSpec.describe DesignByContract::Interface do
         end
 
         context 'and the example class not implements the required specification' do
-          specify_example_class do
+          example_class do
             def test(optional_keyword: nil); end
           end
 

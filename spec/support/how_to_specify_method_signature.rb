@@ -6,8 +6,7 @@ RSpec.shared_examples :how_to_specify_method_signature do
 
     context 'and the test method fullfill this requirement' do
       example_class do
-        def test(value)
-        end
+        def test(value); end
       end
 
       it { is_expected.to be true }
@@ -15,13 +14,11 @@ RSpec.shared_examples :how_to_specify_method_signature do
 
     context "and the test method can't fullfill this" do
       example_class do
-        def test()
-        end
+        def test; end
       end
 
       it { is_expected.to be false }
     end
-
   end
 
   context 'and the signature includes a block definition' do

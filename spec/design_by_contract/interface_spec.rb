@@ -28,4 +28,15 @@ RSpec.describe DesignByContract::Interface do
     include_context :example_class
     include_examples :how_to_specify_method_specification
   end
+
+  describe '#==' do
+    subject(:equality) { interface == oth_interface }
+
+    context 'when other interface is equal by terms of content' do
+      let(:method_specifications) { { test: [:req] } }
+      let(:oth_interface) { described_class.new(method_specifications) }
+
+      it { is_expected.to be true }
+    end
+  end
 end

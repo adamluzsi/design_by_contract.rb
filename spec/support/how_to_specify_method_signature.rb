@@ -1,6 +1,29 @@
 RSpec.shared_examples :how_to_specify_method_signature do
   include_context :example_class
 
+  context 'and signature can be defined with interfaces included in array form' do
+    let(:signature) { [[:req, {}]] }
+
+    context 'and the test method fullfill this requirement' do
+      example_class do
+        def test(value)
+        end
+      end
+
+      it { is_expected.to be true }
+    end
+
+    context "and the test method can't fullfill this" do
+      example_class do
+        def test()
+        end
+      end
+
+      it { is_expected.to be false }
+    end
+
+  end
+
   context 'and the signature includes a block definition' do
     let(:signature) { [:block] }
 
@@ -32,6 +55,26 @@ RSpec.shared_examples :how_to_specify_method_signature do
 
   context 'and the signature includes a req' do
     let(:signature) { [:req] }
+
+    context 'and this means multiple req' do
+      let(:signature) { %i[req req] }
+
+      context 'and the implementation is acceptable for it' do
+        example_class do
+          def test(value1, value2); end
+        end
+
+        it { is_expected.to be true }
+      end
+
+      context 'and the implementation lack to fullfill the signature requirement' do
+        example_class do
+          def test(value1); end
+        end
+
+        it { is_expected.to be false }
+      end
+    end
 
     context 'and the example class implements this specification' do
       example_class do

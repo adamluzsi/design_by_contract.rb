@@ -1,12 +1,4 @@
 class DesignByContract::Interface
-  REQUIRED_ARGUMENT = :req
-  OPTIONAL_ARGUMENT = :opt
-  REST_OF_THE_ARGUMENTS = :rest
-
-  REQUIRED_KEYWORD = :keyreq
-  OPTIONAL_KEYWORD = :key
-  AFTER_KEYWORD_ARGUMENTS = :keyrest
-
   def initialize(method_specifications)
     @method_specifications = method_specifications.reduce({}) do |ms, (name, raw_signature)|
       ms.merge(name => DesignByContract::Signature.new(raw_signature))
@@ -35,4 +27,17 @@ class DesignByContract::Interface
     signature.match?(method)
   end
 
+  def ==(oth_interface)
+    return false unless @method_specifications.length == oth_interface.method_specifications.length
+
+    @method_specifications.each do |name, spec|
+      return false unless oth_interface.method_specifications[name] && oth_interface.method_specifications[name] == spec
+    end
+
+    return true
+  end
+
+  protected
+
+  attr_reader :method_specifications
 end

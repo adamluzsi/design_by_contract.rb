@@ -40,15 +40,12 @@ class T
   end
 end
 
-
-
 DesignByContract.as_dependency_injection_for T, [
     [:req, StoreInterface], # pass as predefined interfaces
     [:key, :logger, {info: [:req, :block]}] # or as raw hash based signature
 ]
 
 ```
-
 
 ### Under the Hood components
 
@@ -67,6 +64,7 @@ def test(value, value_with_default="def", keyword:)
 end
 
 s.match?(method(:test)) #=> true
+
 ```
 
 #### Interface
@@ -115,6 +113,7 @@ i.fulfilled_by?(Bad.new) #=> false
 i.match?(Bad.new.method(:test)) #=> false
 
 ```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/design_by_contract. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.

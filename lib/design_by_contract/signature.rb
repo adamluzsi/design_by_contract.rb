@@ -1,10 +1,17 @@
 class DesignByContract::Signature
   autoload :Spec, 'design_by_contract/signature/spec'
 
-  def initialize(method_args_spec)
-    @method_args_specs = method_args_spec.map do |spec|
+  def initialize(raw_method_specs)
+    @method_args_specs = raw_method_specs.map do |spec|
       DesignByContract::Signature::Spec.new(spec)
     end
+  end
+
+  def valid?(*args)
+    method_args_specs.each_with_index do |spec, index|
+      return false unless spec.interface.fulfilled_by?(args[index])
+    end
+    return true
   end
 
   def match?(parametered_object)
@@ -19,6 +26,10 @@ class DesignByContract::Signature
     end
 
     true
+  end
+
+  def empty?
+    method_args_specs.empty?
   end
 
   protected

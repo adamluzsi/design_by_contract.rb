@@ -38,6 +38,7 @@ class T
 
   def initialize(store, logger: Logger.new(STDOUT))
   end
+
 end
 
 DesignByContract.as_dependency_injection_for T, [

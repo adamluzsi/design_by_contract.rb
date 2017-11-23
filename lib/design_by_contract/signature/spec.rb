@@ -11,10 +11,15 @@ class DesignByContract::Signature::Spec
       interface == oth_spec.interface
   end
 
+  def raw
+    [type, keyword, interface.raw]
+  end
+
   private
 
   def format(spec)
-    spec = [spec] unless spec.is_a?(::Array)
+    spec = [spec] if spec.is_a?(::Symbol)
+    raise(ArgumentError) unless spec.is_a?(::Array)
 
     case spec.length
     when 1
@@ -39,6 +44,7 @@ class DesignByContract::Signature::Spec
   end
 
   def parse_keyword(object)
+    p object
     case object
     when ::Symbol, ::NilClass
       return object

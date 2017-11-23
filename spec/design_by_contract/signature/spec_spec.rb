@@ -92,4 +92,36 @@ RSpec.describe DesignByContract::Signature::Spec do
       it { expect { spec }.to raise_error ArgumentError }
     end
   end
+
+  describe '#keyword' do
+    subject(:key) { spec.keyword }
+
+    context "when the method args don't mention any particullar keyword" do
+      let(:method_arg_spec) { :req }
+
+      it { is_expected.to be nil }
+
+      context 'and even an interface is also given' do
+        let(:method_arg_spec) { [:req, {}] }
+
+        it { is_expected.to be nil }
+      end
+    end
+
+    context 'when keyword is defined' do
+      %i[key keyreq].each do |key_type|
+        context "when keyword type is #{key_type}" do
+          let(:method_arg_spec) { [key_type, :key_name] }
+
+          it { is_expected.to eq :key_name }
+
+          context 'and an interface also given' do
+            let(:method_arg_spec) { [:keyreq, :name_of_the_key, {}] }
+
+            it { is_expected.to eq :name_of_the_key }
+          end
+        end
+      end
+    end
+  end
 end

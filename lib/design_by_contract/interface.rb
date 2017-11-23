@@ -37,6 +37,12 @@ class DesignByContract::Interface
     return true
   end
 
+  def raw
+    @method_specifications.reduce({}) do |hash, (k,v)|
+      hash.merge(k => v.raw)
+    end
+  end
+
   protected
 
   attr_reader :method_specifications

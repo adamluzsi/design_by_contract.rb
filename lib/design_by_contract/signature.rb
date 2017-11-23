@@ -32,6 +32,10 @@ class DesignByContract::Signature
     method_args_specs.empty?
   end
 
+  def raw
+    @method_args_specs.map(&:raw)
+  end
+
   protected
 
   attr_reader :method_args_specs

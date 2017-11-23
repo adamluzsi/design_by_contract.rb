@@ -124,4 +124,20 @@ RSpec.describe DesignByContract::Signature::Spec do
       end
     end
   end
+
+  describe '#raw' do
+    subject(:array_form) { spec.raw }
+
+    context 'given simple spec provided' do
+      let(:method_arg_spec) { :req }
+
+      it { is_expected.to eq [:req, nil, {}] }
+    end
+
+    context 'given array form spec given' do
+      let(:method_arg_spec) { [:req] }
+
+      it { is_expected.to eq [:req, nil, {}] }
+    end
+  end
 end

@@ -46,4 +46,14 @@ RSpec.describe DesignByContract::Signature do
       it { is_expected.to be false }
     end
   end
+
+  describe '#raw' do
+    subject(:array_form) { checker.raw }
+
+    context 'given the specification is not empty' do
+      let(:signature) { [:req, [:key, :test, { test: [:req] }]] }
+
+      it { is_expected.to eq [[:req, nil, {}], [:key, :test, { test: [[:req, nil, {}]] }]] }
+    end
+  end
 end

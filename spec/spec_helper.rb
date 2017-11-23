@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'design_by_contract'
+require 'logger'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

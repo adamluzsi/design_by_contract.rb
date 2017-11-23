@@ -44,7 +44,6 @@ class DesignByContract::Signature::Spec
   end
 
   def parse_keyword(object)
-    p object
     case object
     when ::Symbol, ::NilClass
       return object

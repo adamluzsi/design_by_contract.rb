@@ -38,5 +38,22 @@ RSpec.describe DesignByContract::Interface do
 
       it { is_expected.to be true }
     end
+
+    context 'when other interface is different by terms of content' do
+      let(:method_specifications) { { test: [:req] } }
+      let(:oth_interface) { described_class.new(different_requirement: [:req]) }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe '#raw' do
+    subject(:hash_form) { interface.raw }
+
+    context 'given the specification is not empty' do
+      let(:method_specifications) { { test: [:req] } }
+
+      it { is_expected.to eq test: [[:req, nil, {}]] }
+    end
   end
 end

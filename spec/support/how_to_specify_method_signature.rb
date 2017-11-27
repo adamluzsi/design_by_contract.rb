@@ -30,7 +30,7 @@ RSpec.shared_examples :how_to_specify_method_signature do
       it { is_expected.to be true }
     end
 
-    xcontext 'when block is mentioned with an ambigous syntax like yield' do
+    context 'when block is mentioned with an ambigous syntax like yield' do
       example_class do
         def test
           yield
@@ -41,7 +41,7 @@ RSpec.shared_examples :how_to_specify_method_signature do
       it { is_expected.to be true }
     end
 
-    xcontext 'when no block defined' do
+    context 'when no block defined' do
       example_class do
         def test; end
       end

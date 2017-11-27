@@ -1,18 +1,12 @@
-class DesignByContract::Pattern::DependencyInjection
+class DesignByContract::Pattern::DependencyInjection < DesignByContract::Pattern::Base
   def initialize(target_class, initialize_signature_spec)
     @target_class = target_class
     @signature = DesignByContract::Signature.new(initialize_signature_spec)
-    @teardowns = []
   end
 
   def up
     validate_initialize_method_signature
     add_on_call_validation_hook
-  end
-
-  def down
-    @teardowns.each(&:call)
-    @teardowns.clear
   end
 
   private
@@ -30,7 +24,7 @@ class DesignByContract::Pattern::DependencyInjection
     end
 
     @target_class.__send__(:prepend, initialize_checker)
-    @teardowns << lambda{ initialize_checker.__send__(:remove_method, :initialize) }
+    add_teardown { initialize_checker.__send__(:remove_method, :initialize) }
   end
 
   # TODO: signature inspect

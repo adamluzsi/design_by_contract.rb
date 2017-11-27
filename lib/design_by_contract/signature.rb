@@ -1,4 +1,6 @@
+require 'ripper'
 class DesignByContract::Signature
+  autoload :Block, 'design_by_contract/signature/block'
   autoload :Spec, 'design_by_contract/signature/spec'
 
   def initialize(raw_method_specs)
@@ -11,11 +13,11 @@ class DesignByContract::Signature
     method_args_specs.each_with_index do |spec, index|
       return false unless spec.interface.fulfilled_by?(args[index])
     end
-    return true
+    true
   end
 
   def match?(parametered_object)
-    parameters_match?(parametered_object.parameters)
+    parameters_match?(parametered_object)
   end
 
   def ==(oth_signature)
@@ -42,13 +44,16 @@ class DesignByContract::Signature
 
   private
 
-  def parameters_match?(parameters)
+  def parameters_match?(method)
+    parameters = method.parameters
+
     req_match?(parameters) &&
       opt_match?(parameters) &&
       rest_match?(parameters) &&
       keyreq_match?(parameters) &&
       key_match?(parameters) &&
-      keyrest_match?(parameters)
+      keyrest_match?(parameters) &&
+      block_match?(method)
   end
 
   def keyrest_match?(parameters)
@@ -96,5 +101,11 @@ class DesignByContract::Signature
     expected_req_count = method_args_specs.select { |s| s.type == type }.length
     actual_req_count = parameters.map(&:first).select { |v| v == type }.length
     [expected_req_count, actual_req_count]
+  end
+
+  def block_match?(method)
+    block_expected = @method_args_specs.any? { |spec| spec.type == :block }
+    return true unless block_expected
+    DesignByContract::Signature::Block.new(method).found? == block_expected
   end
 end

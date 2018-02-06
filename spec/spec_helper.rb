@@ -13,6 +13,11 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before(:each) do
+    DesignByContract.forget_contract_specifications!
+    DesignByContract.enable_defensive_contract
+  end
 end
 
 Dir.glob(File.join(__dir__, 'support', '**', '*.rb')).each { |path| require(path) }
